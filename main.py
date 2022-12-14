@@ -8,6 +8,7 @@ data = read_csv("elves_calories - Sheet1.csv")
 hands_dealt = read_csv("Advent of Code - Sheet3.csv")
 rucksacks_data = read_csv("Advent of Code - Sheet2.csv")
 cleanup_data = read_csv("Advent of Code - Sheet4.csv")
+moves_data = read_csv("Advent of Code - Sheet5.csv")
 
 # ---- Day 1 - Calorie Counting ---- #
 
@@ -139,7 +140,7 @@ alphabet_count = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8
                   }
 # Create list from csv data
 rucksacks = rucksacks_data["Rucksacks"].tolist()
-print(rucksacks)
+# print(rucksacks)
 
 # Split and prepare the list for function manipulation
 r_list = []
@@ -152,6 +153,8 @@ for sack in rucksacks:
 
 # print(r_list)
 sack_list = [r_list[i:i + 2] for i in range(0, len(r_list), 2)]
+
+
 # print(sack_list)
 
 
@@ -163,13 +166,13 @@ def split_sack(sacks):
         letter = [i for i in s_sack[0] if i in s_sack[1]]
         # print(letter)
         letters.append(letter)
-    print(letters)
+    # print(letters)
     for letter in letters:
         f_score += alphabet_count[letter[0]]
     return f_score
 
 
-print(split_sack(sack_list))
+# print(split_sack(sack_list))
 
 
 # ---- Day 3 - Part two ---- #
@@ -180,7 +183,9 @@ def three_split(lst, n):
 
 
 three_list = list(three_split(rucksacks, 3))
-print(three_list)
+
+
+# print(three_list)
 
 
 def sp_sack(sacks):
@@ -189,25 +194,27 @@ def sp_sack(sacks):
     for t_sack in sacks:
         letter = [char for char in t_sack[0] if char in t_sack[1] and char in t_sack[2]]
         new_letter.append(letter)
-    print(new_letter)
+    # print(new_letter)
     for letter in new_letter:
         t_score += alphabet_count[letter[0]]
     return t_score
 
 
-print(sp_sack(three_list))
+# print(sp_sack(three_list))
 
 
 # ---- Day 4 - Camp Cleanup - Part one ---- #
 
 cleanup_range = cleanup_data["cleanup_sections"].tolist()
-print(cleanup_range)
+# print(cleanup_range)
 
 nested_range = [re.split(r'[-,]', item) for item in cleanup_range]
-print(nested_range)
+# print(nested_range)
 
 nested_range = [list(map(int, x)) for x in nested_range]
-print(nested_range)
+
+
+# print(nested_range)
 
 
 def check_cleanup(nested_range_list):
@@ -222,7 +229,7 @@ def check_cleanup(nested_range_list):
     return count
 
 
-print(check_cleanup(nested_range))
+# print(check_cleanup(nested_range))
 
 
 # ---- Day 4 - Part 2 ---- #
@@ -239,8 +246,103 @@ def check_overlap(nested_range_list):
     return count
 
 
-print(check_overlap(nested_range))
+# print(check_overlap(nested_range))
 
 
 # ---- Day 5 - Supply Stacks - Part one ---- #
+moves = moves_data['Moves'].tolist()
+# print(moves)
+moves = [re.findall(r'\b\d+\b', move) for move in moves]
+# print(moves)
+moves = [list(map(int, x)) for x in moves]
+# print(moves)
+stacks = {
+    1: ["R", "G", "H", "Q", "S", "B", "T", "N"],
+    2: ["H", "S", "F", "D", "P", "Z", "J"],
+    3: ["Z", "H", "V"],
+    4: ["M", "Z", "J", "F", "G", "H"],
+    5: ["T", "Z", "C", "D", "L", "M", "S", "R"],
+    6: ["M", "T", "W", "V", "H", "Z", "J"],
+    7: ["T", "F", "P", "L", "Z"],
+    8: ["Q", "V", "W", "S"],
+    9: ["W", "H", "L", "M", "T", "D", "N", "C"]
+}
+
+# def move_crates(a, b, c, stacks):
+#     m_stack = stacks[b][-a:]
+#     m_stack.reverse()
+#     print(m_stack)
+#     stacks[c].extend(m_stack)
+#     stacks[b] = stacks[b][0:-a]
+#     print(stacks)
+#
+#
+# for move in moves:
+#     move_crates(move[0], move[1], move[2], stacks)
+#
+#
+# for key in stacks:
+#     print(stacks[key][-1])
+
+
+# ---- Day 5 - Part two ---- #
+
+# def reverse_crates(a, b, c, stacks):
+#     r_stack = stacks[b][-a:]
+#     print(r_stack)
+#     stacks[c].extend(r_stack)
+#     stacks[b] = stacks[b][0:-a]
+#     print(stacks)
+#
+#
+# for move in moves:
+#     reverse_crates(move[0], move[1], move[2], stacks)
+#
+#
+# for key in stacks:
+#     print(stacks[key][-1])
+
+
+# ---- Day Six - Tuning Trouble - Part one ---- #
+
+# string = "mqllsjlslffbqbsbpbcbdbfbfvbfblfltffpddsmmhjmjvmvsmvvjfvfjjfccblbddhrdhrrlcrllrrswwlpwlwwgrglrgllrrlsshffrwfwcffmrrdfdrrncrnnlvllbsbcbwcchsshsrhhbnhbbqbmmmfdfvvqpqlpqppfgpfgpfpfttwrwwwfmfpfpmmpgglwglgfgsfgsggdllfhhmchmhttlhlchhrzrszsqqqzdzrrbbpgpccmfcmcbcdcrdrzzvjjgjfgfqfcqffvbbjbjbjsbjjbhjjzjlzjznzbbjvvpssdfdvffssrffpzfppsddgwgzgccrmrmdrrzpzbbjlbjlbjbgjbjmmtmllqffpjfppzzztfzfzfmfnndmdtmmhgmmsdshdhppbnpnbpnpdndgdbdwdtwwzqqjwjpphnnjddlglzlczzdpdjdjtjtgtqtptrrbqqqspsfswsdwdjdsdcdllpzpqplqqjnjrnnvrrnrccnwnnsttqzqcqppvmvdmdjjpnppljppptpzzwbwrrqgqhghshlslblflhflfbbwhwlhwhbwbdwbdwwzlwzwhzwznwwmmrddlttdrtrsttqbqtqtdqttqwwglwlbbdmbmcbbwbnbtbmbggdqqnhqqptpdtttvcvmvmdmtdttcwclccjcrctcllrprlrqqzqccttgnntstrtqqtfthtghhvcczhhctclljcljlcjcdjcdchhmjmjjrsjszjszsbsqqpfflqffqvfqvqjjnjtthvvvcjcjrcjclcwcrcrjcrchrcrggcjjpjjbwjbwjbwjwsjjrssfggzbgzgzrzmrmwmrrczcppnmnmzzgtglljlhjlhhgzgtgddrrhvvvlhlwhlhzzgzfgzzbvbvrvllplnlqnnfvnvgvdgvddsdqsdscscjjjvrvpptgpgdgtdtdzdtztfzfszfftjftfmftmtftddjzdzssfllfsllpwpwswrwdrwrcclczlclpccdrrftrftrtltftnftfnfrnfrfgfjfttrsrqsshlhdhnnztntwwnwppwbbmrbbtntznzggthghfggttpnpnpbplpvvpmmpwmbgcpwgsfndbrclcwbdcfhlcqblplglnqpnrpjqbddfqlqvbzrtwbwzvwqntcgmzrzztlffzmfmcmfzrmcvfctmlrlbtbpsgddbqrlblsslsbcmcglzdzjzlpgzprbrmfmlzrssqddzfjzfgbpvdgrrnldmtqgtjppqqwtzbltpfgpqtdqpwhbbwblnvvpmnljdghwrbnphswhgcvhpcplbbmwprznzzwnfntfplscpflhwdmlvfwtgrjhchnmnqbfgvsglllnnzwchqtcrvqzzhttcmblcthqrjdbvpwptcqtsnwrnfbbsqlshhtqdvcfcgdlbgzqjvzvglbcdwzpzttjnsvwrdldcqqstnnfnjthncgfvggphgfgstnmvnbmtvhpmsgmrccmmslqmjfzdjnbcjbjnpmsnvmzrphhjrdrrssnclvwbnzvpccqglnpljdtwrlnvpqzlshpcmfnmrjchqvlmthqbdrlnnpwcmfnwfzpbpnrsdmrqgqsjgwttwhgqlwghjntrvdndfhdwfzbwnmbjlzbhhdqfrdtwcjjvfnjbqdmdwncfhmslflvhqdmrcdrcdrldnqdmhzsvlglgflmlhwjqvfjdmqbmgffvdmmsbrrnrlcsbncvsjffttmhnbpwmqrnvdmzhztbbsrtwgfshjnlvhqvzwpvrmqfbsszswvrglnmwlmcdpjvmqsgnjshspzwrwctwwghmgjvbthcqcrlflsnrnpwvbnghrhvzpzchjlcljplflzqdvglgtvczhnbnlqltblddslqmdpvfbstvszqdsjvgfqlmdgbsnlzlrnbbqqfqjfqhljzlpbbgbnchwljjcpzbhdmwfzmqstcwtvgtvwcpgvmhpsngrshjvzzngbhjqmcfgjjzgdzcsbsvfwmznmwnnvlbntvcmgphqmdfjvhrlldcpwgnmbpjlqflvsrwqphvlpzlsdthfzdzvlphzdbqldvggsgrcmmfmfnjsfszqqbhnmntfgrbfwtlpqgwnrcqdsmqpqbtfdsnhbdcbwcdrhrfgsctrnlchrrnlptbcnqhndcpcdrgtznqrbgjlwzsjhblptncwtqcqcbzccrnjcmfvfnzwlrgdtgcvvcprwvnrrbdjzfnlvlqfpgbpwsvcnmnmmhnshtjgrcnscljwncdjqtwhlhvcggnwbzlzvfqmcdhmzddrdhvnnjbzbtnrgqcbmzhzzfldhlwwsgztfhncgctvjvszdzhrqmzvffmhvsqssjjvrrmtwqswhwjqgbfghbgfmgqssfhbcrglnbstfnqzvwqcznzgtnvjdvhtrlmgthcrqcwbjnzddsqhzwmdwndqcplhvpbpsdthngqwmlfqfndfqbpbwwrvsrnsjbsrwjdjbcqcvdfcsscgblggwggtmbntnbmmswfhvzhltwvprdgvzwltchhzsqlpwdndwftmsgbfwbpmhsdjhwbvvpzlpspsrsnpbwtdspfvdqdjfjbzmmtbnpzrqngccrbfndnjbcjfvwjvfjdvmsqdvgctzvpzmjmjvggpqfmmrsvqbrrlwrmzhmhpcmpltwdbtmwgzrrvsdhvhlwzggjwqzpbzvzrdbptzhzcrrjwjmdwdpsfwfspjgtmfcvddgspldbldtbtwrzdsjrbhvvcjgnrsbzvbrnqjwhrzgfsbdjlfqlszvlnrbfcrgfwrsmqmmnrwbtvfdpjzpfbhplfdsrwwgqqtgnzvddbgjjllmmcjjlglwmsbwrdrnnznwzplnbhlrlnmnllwgwgdpqdqqlmvsbgcshsmntrrlrvdhjgctzsfhmvfqtthvvchftflhlqqhhhbhqvgwtcmgcfwldhgptfddpsqrfzqmtpszswfrztzfsspltcvjwwsljsnjpnnqggscwwmcwfrljlrtqwqvplthsctvbndjfpnvcbdngzqtgjvwlsdhthdwmjvtnzrplwzwsfmgszpqjcjttslsmtbbvhjgpqmqfjbcccsnrlwmjhbsqgzqldmlhnbjnjfwmgzpvdcwndbwcncmtzccngcghhpwmjnncfgqtdtzwmhbdrpwsfbnjzfnwzwqncnlfjqjrjhgnqgvbcdhgdnbwpqjcfgprmfhzlrqtwlqpshfrgdszrwdtqfcntrzbgzlvrhtlsbjjwtnlqllnsvbzwjlmqvdgvtslmbwwcfstmqntwwwsjmrflrqnttfzjchpgwczzdtqbhdrtrpvhhbscvjtdtrhbstpqrnrzszwvcqzhbrzhlblvzrgwtqzbslbmgdqhpfqrdqrzcsbglcsshcwvlcpgjtjmcgpmsnldjzlwnrqlzzznpvmgssvzshjvtsmmzvstpqrhfvttnsrddfcqcbwhgpfdtlhcvcgjgdrvvntvdjqpvwvfmphhpzjgmshddqfsbpjbzrfdjnwrhmgcfbccmzqgvrbmcjdpvwfrtdpbwvjtjcrmnpzrrqbbvbsgcplwmlbsdwptbprlczjcqhdzprpttvnthbmtscdtjvrnwqhnvqbzvwnphnzwlgvvjhddjvjrvwlmhqcsffcnhgjzdjppqqwbglbhgzsmvzwjdvbqpztphshtrbrrhzmdlfdtssbhrcltwlqpzvpgbsgngpfjsjbrnnlzctqcqzwswhfnjjngwsztdgmmcffqfhbsgwstnflqjqttzbtgjvcfrrdwzcvhwjnhmtphszrsptjsqqwcwfnmtlzvzsqsmghtztrpvdslrmjqqvwfmzlwwjbwtpmhtqcfctdztsnfrhfqwqcjdzmjhvwwgrslmdqqwgwfvwlzzsznmdrzgcvbmrtcvjsqlftnpdhwmrzjwsnjjdrczbjcwhwlrtljwjsfmcfcrsjflsldbjrzpdgltmhtszzznjjlfqmgpbjfjncvtvlcfsmltbsvsrgdhwwhcpbdbntqhgjztvlwtwdsgqfwtlcdzffcszjmjvj "
+
+# starting four
+# check_list = []
+# for i in range(0, len(string), 1):
+#     check_str = string[i: i + 4]
+#     check_list.append(check_str)
+#
+# print(check_list)
+# answer = []
+#
+# for check in check_list:
+#     if len(set(check)) == len(check):
+#         answer.append(check)
+#
+# print(answer)
+#
+# print(string.index(answer[0]) + 4)
+
+
+# ---- Part two ---- #
+
+# check_list = []
+# for i in range(0, len(string), 1):
+#     check_str = string[i: i + 14]
+#     check_list.append(check_str)
+#
+# print(check_list)
+# answer = []
+#
+# for check in check_list:
+#     if len(set(check)) == len(check):
+#         answer.append(check)
+#
+# print(answer)
+#
+# print(string.index(answer[0]) + 14)
+
+
+# ---- Day 7 - No Space Left on Device ---- #
 
